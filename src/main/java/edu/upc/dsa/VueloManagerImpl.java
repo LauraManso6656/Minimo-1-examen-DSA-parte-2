@@ -155,7 +155,7 @@ public class VueloManagerImpl implements VueloManager {
     public int size() {
         return 0;
     }
-}
+} 
 
 
 
