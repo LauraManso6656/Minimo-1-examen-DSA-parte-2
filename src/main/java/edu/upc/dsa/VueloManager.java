@@ -22,6 +22,8 @@ public interface VueloManager {
 
     Vuelo getVuelo(String vueloId);
 
+    Vuelo getVuelo(String id, String horaSalida, String horaLlegada, String avionId, String origen, String destino);
+
     List<Vuelo> getAllVuelos();
 
     void deleteVuelo(String vueloId);

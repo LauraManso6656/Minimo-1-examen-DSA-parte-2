@@ -46,11 +46,38 @@ public class VueloManagerTest {
         Assert.assertEquals("Barcelona", vuelo.getDestino());
     }
 
+    @Test
+    public void testGetVueloExistente() {
+        Vuelo vuelo = vueloManager.getVuelo("V1");
+        Assert.assertNotNull(vuelo);
+        Assert.assertEquals("V1", vuelo.getId());
+        Assert.assertEquals("10:00", vuelo.getHoraSalida());
+        Assert.assertEquals("12:00", vuelo.getHoraLlegada());
+        Assert.assertEquals("Barcelona", vuelo.getOrigen());
+        Assert.assertEquals("Madrid", vuelo.getDestino());
+        Assert.assertEquals("A1", vuelo.getAvionAsignado());
+    }
+
     @Test //ya funciona
     public void testGetAllVuelos() {
         List<Vuelo> vuelos = vueloManager.getAllVuelos();
         Assert.assertEquals(2, vuelos.size());
     }
+
+    @Test
+    public void testAddMaletaExistente() {
+        vueloManager.facturarMaleta("V1", "User1");
+        vueloManager.facturarMaleta("V1", "User2");
+
+        // Recuperar maletas asociadas al vuelo "V1"
+        List<Maleta> maletas = vueloManager.getMaletasByVuelo("V1");
+
+        Assert.assertNotNull(maletas); // Verificar que la lista no sea nula
+        Assert.assertEquals(2, maletas.size()); // Verificar que hay 2 maletas
+        Assert.assertEquals("User2", maletas.get(0).getUserId()); // Última maleta añadida primero
+        Assert.assertEquals("User1", maletas.get(1).getUserId());
+    }
+
 
 
     @Test //YA FUNCIONA 
@@ -60,5 +87,23 @@ public class VueloManagerTest {
         List<Maleta> maletaList = vueloManager.getMaletasByVuelo("V1");
         Assert.assertEquals("User2", maletaList.get(0).getUserId()); // Última maleta facturada primero
         Assert.assertEquals("User1", maletaList.get(1).getUserId());
+    }
+
+    @Test
+    public void testDeleteVueloExistente() {
+        // Eliminar el vuelo con ID "V1"
+        vueloManager.deleteVuelo("V1");
+
+        // Verificar que el vuelo ya no existe
+        Vuelo vuelo = null;
+        try {
+            vuelo = vueloManager.getVuelo("V1");
+        } catch (IllegalArgumentException e) {
+            // El vuelo no debe existir
+            Assert.assertNull(vuelo);
+        }
+
+        // Verificar que solo queda un vuelo en el sistema
+        Assert.assertEquals(1, vueloManager.getAllVuelos().size());
     }
 }

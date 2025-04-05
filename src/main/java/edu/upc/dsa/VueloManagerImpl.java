@@ -125,6 +125,10 @@ public class VueloManagerImpl implements VueloManager {
         return avion;
     }
 
+
+
+
+
     @Override
     public Vuelo getVuelo(String id) {
         logger.info("Inicio de getVuelo: id=" + id);
@@ -138,6 +142,11 @@ public class VueloManagerImpl implements VueloManager {
     }
 
     @Override
+    public Vuelo getVuelo(String id, String horaSalida, String horaLlegada, String avionId, String origen, String destino) {
+        return null;
+    }
+
+    @Override
     public List<Vuelo> getAllVuelos() {
 
         logger.info("Inicio de getAllVuelos");
@@ -148,6 +157,18 @@ public class VueloManagerImpl implements VueloManager {
 
     @Override
     public void deleteVuelo(String vueloId) {
+        logger.info("Inicio de deleteVuelo: vueloId=" + vueloId);
+
+        // Verificar si el vuelo existe
+        Vuelo vuelo = vuelos.get(vueloId);
+        if (vuelo == null) {
+            logger.error("Error: el vuelo con ID " + vueloId + " no existe.");
+            throw new IllegalArgumentException("El vuelo con ID " + vueloId + " no existe.");
+        }
+
+        // Eliminar el vuelo del mapa
+        vuelos.remove(vueloId);
+        logger.info("Vuelo con ID " + vueloId + " eliminado exitosamente.");
 
     }
 
